@@ -6,8 +6,8 @@ WiLinker - Wireless Linker
 2. nrf24l01
 
 ### 软件
-1. dapboot
-2. daplink
+1. [usboot](https://github.com/jiauzhang/usboot)
+2. J-Flash
 
 ### 工具
 Keil 软件默认生成的文件为 XXX.hex 文件，而通过其他工具下载程序时，需要将 XXX.hex
