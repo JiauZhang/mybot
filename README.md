@@ -28,6 +28,11 @@ Keil 自带的工具可以使用，各种转换方式如下：
 而完全按照 [JTAG](./doc/jtag.md) 的连接方式连线之后，再选择 SWD 模式下载时，可以成功下载程序。
 5. 一定要使用能够进行数据通信的 MicroUSB 线，比如手机充电线。
 6. 使用 USB Hub 时，系统无法识别 DFU Boot USB 设备。
+7. 由于下载的程序禁用了 SWD 功能，所以在此下载时 J-Flash 无法连接板子，此时可以通过按住板子的 Reset 按键不放，
+同时在 J-Flash 上点击连接即可正常连接，不过此时仍然无法进行下载和擦除芯片，可能是因为板子一直通着电，
+硬件配置并没有失效，所以将板子彻底断电，并将 BOOT0 和 BOOT1 都置高，防止板子上电再执行 Flash 中的程序，
+将铁直尺放在所有引脚上给板子放电，等待几分钟，重新上电即可正常连接板子，也可以正常擦除芯片以及下载程序；
+当出现问题时，如果连接成功了，首先尝试擦除芯片，彻底阻止程序再运行。
 
 ### 参考资料
 1. [BluePill Arduino 手册](https://www.techshopbd.com/uploads/product_document/STM32bluepillarduinoguide(1).pdf)
