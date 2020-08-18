@@ -42,7 +42,7 @@ CC = $(CROSS_COMPILE)gcc
 LD = $(CROSS_COMPILE)ld
 AR = $(CROSS_COMPILE)ar
 NM = $(CROSS_COMPILE)nm
-OBJCOPY = $(CROSS_COMPILE)objcopy
+OBJCOPY = $(CROSS_COMPILE)objcopy 
 OBJDUMP = $(CROSS_COMPILE)objdump
 SZ = $(CROSS_COMPILE)size
 
@@ -70,16 +70,21 @@ lib-y :=
 include lib/Makefile
 include src/Makefile
 
-WiLinker: $(obj-y) $(lib-y)
-	$(Q)$(CC) $(obj-y) $(lib-y) $(LDFLAGS) -o $@
+WiLinker: $(obj-y) lib/libcore.a
+	$(Q)$(CC) $(obj-y) -L lib -lcore $(LDFLAGS) -o $@
 	$(Q)$(SZ) $@
 WiLinker.bin: WiLinker
-	$(Q)$(OBJCOPY) -O binary -S $< $@
+	$(Q)echo "OBJCOPY   $@"
+	$(Q)$(OBJCOPY) -O binary -R .comment -S $< $@
+	$(Q)echo "$@ is ready!"
 WiLinker.hex: WiLinker
+	$(Q)echo "OBJCOPY   $@"
 	$(Q)$(OBJCOPY) -O -ihex $< $@
+	$(Q)echo "$@ is ready!"
 WiLinker.dis: WiLinker
 	$(Q)echo "OBJDUMP   $@"
 	$(Q)$(OBJDUMP) -D -m arm $< > $@
+	$(Q)echo "$@ is ready!"
 
 %.o: %.S
 	$(Q)echo "AS        $@"
@@ -87,3 +92,8 @@ WiLinker.dis: WiLinker
 %.o: %.c
 	$(Q)echo "CC        $@"
 	$(Q)$(CC) -c $(CFLAGS) $< -o $@
+
+lib/libcore.a: $(lib-y)
+	$(Q)echo "AR        $@"
+	$(Q)rm -f $@
+	$(Q)$(AR) rcs $@ $(lib-y)
