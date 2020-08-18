@@ -4,3 +4,5 @@
 *.dis
 /WiLinker*
 *.map
+*.a
+*.so
