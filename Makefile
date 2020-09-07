@@ -48,17 +48,17 @@ SZ = $(CROSS_COMPILE)size
 
 export AS CC LD AR NM OBJCOPY OBJDUMP
 
-ASFLAGS = -mcpu=$(CPU) -mthumb
+ASFLAGS = -mcpu=$(CPU) -mthumb -Os
+ASFLAGS += -Wall -fdata-sections -ffunction-sections
 
-CFLAGS = -mcpu=$(CPU) -mthumb -DUSE_HAL_DRIVER -DSTM32F103xB
+CFLAGS = -mcpu=$(CPU) -mthumb -Os -DUSE_HAL_DRIVER -DSTM32F103xB
 CFLAGS += -Wall -fdata-sections -ffunction-sections
 CFLAGS += -Iinclude
 
 LDSCRIPT = STM32F103C8Tx_FLASH.ld
 LIBS = -lc -lm -lnosys 
-LIBDIR = 
-LDFLAGS = -mcpu=$(CPU) -mthumb -specs=nano.specs -T$(LDSCRIPT) \
-	$(LIBDIR) $(LIBS) -Wl,--gc-sections
+LIBDIR =
+LDFLAGS = -mcpu=$(CPU) -mthumb -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,--gc-sections
 
 # That's our default target when none is given on the command line
 PHONY := _all
@@ -72,23 +72,23 @@ include src/Makefile
 
 WiLinker: $(obj-y) lib/libcore.a
 	$(Q)$(CC) $(obj-y) -L lib -lcore $(LDFLAGS) -o $@
-	$(Q)$(SZ) $@
+	$(Q)echo "\033[31m$@\033[0m is ready!"
 WiLinker.bin: WiLinker
 	$(Q)echo "OBJCOPY   $@"
 	$(Q)$(OBJCOPY) -O binary -R .comment -S $< $@
-	$(Q)echo "$@ is ready!"
+	$(Q)echo "\033[31m$@\033[0m is ready!"
 WiLinker.hex: WiLinker
 	$(Q)echo "OBJCOPY   $@"
 	$(Q)$(OBJCOPY) -O -ihex $< $@
-	$(Q)echo "$@ is ready!"
+	$(Q)echo "\033[31m$@\033[0m is ready!"
 WiLinker.dis: WiLinker
 	$(Q)echo "OBJDUMP   $@"
 	$(Q)$(OBJDUMP) -D -m arm $< > $@
-	$(Q)echo "$@ is ready!"
+	$(Q)echo "\033[31m$@\033[0m is ready!"
 
 %.o: %.S
 	$(Q)echo "AS        $@"
-	$(Q)$(AS) -c $(ASFLAGS) $< -o $@
+	$(Q)$(CC) -c $(ASFLAGS) $< -o $@
 %.o: %.c
 	$(Q)echo "CC        $@"
 	$(Q)$(CC) -c $(CFLAGS) $< -o $@
@@ -97,3 +97,8 @@ lib/libcore.a: $(lib-y)
 	$(Q)echo "AR        $@"
 	$(Q)rm -f $@
 	$(Q)$(AR) rcs $@ $(lib-y)
+
+clean:
+	$(Q)rm -f lib/*.o lib/*.a
+	$(Q)rm -f src/*.o 
+	$(Q)rm -f WiLinker WiLinker.bin WiLinker.dis

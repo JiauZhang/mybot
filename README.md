@@ -10,5 +10,5 @@ WiLinker - Wireless Linker
 2. J-Flash
 
 ### TODO
-- [] fine-tune Makefile
-- [] reorganize file structure
+- [x] fine-tune Makefile
+- [ ] reorganize file structure

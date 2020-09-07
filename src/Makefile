@@ -1,4 +1,6 @@
-objs = start.o main.o gpio.o stm32f1xx_hal_msp.o stm32f1xx_it.o
-objs += system_stm32f1xx.o usart.o
+objs := $(wildcard src/*.c src/*.S src/*.s)
+objs := $(patsubst %.c,%.o,$(objs))
+objs := $(patsubst %.s,%.o,$(objs))
+objs := $(patsubst %.S,%.o,$(objs))
 
-obj-y += $(addprefix src/,$(objs))
+obj-y += $(objs)
