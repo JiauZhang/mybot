@@ -48,11 +48,13 @@ SZ = $(CROSS_COMPILE)size
 
 export AS CC LD AR NM OBJCOPY OBJDUMP
 
-ASFLAGS = -mcpu=$(CPU) -mthumb -Os
+ASFLAGS = -mcpu=$(CPU) -mthumb -c
 ASFLAGS += -Wall -fdata-sections -ffunction-sections
 
-CFLAGS = -mcpu=$(CPU) -mthumb -Os -DUSE_HAL_DRIVER -DSTM32F103xB
+# CFLAGS = -mcpu=$(CPU) -mthumb -Os -DUSE_HAL_DRIVER -DSTM32F103xB
+CFLAGS = -mcpu=$(CPU) -mthumb -c
 CFLAGS += -Wall -fdata-sections -ffunction-sections
+CFLAGS += -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER
 CFLAGS += -Iinclude
 
 LDSCRIPT = STM32F103C8Tx_FLASH.ld
@@ -68,7 +70,8 @@ obj-y :=
 lib-y := 
 
 include lib/Makefile
-include src/Makefile
+include init/Makefile
+include drivers/Makefile
 
 WiLinker: $(obj-y) lib/libcore.a
 	$(Q)$(CC) $(obj-y) -L lib -lcore $(LDFLAGS) -o $@
@@ -88,10 +91,10 @@ WiLinker.dis: WiLinker
 
 %.o: %.S
 	$(Q)echo "AS        $@"
-	$(Q)$(CC) -c $(ASFLAGS) $< -o $@
+	$(Q)$(CC) $(ASFLAGS) $< -o $@
 %.o: %.c
 	$(Q)echo "CC        $@"
-	$(Q)$(CC) -c $(CFLAGS) $< -o $@
+	$(Q)$(CC) $(CFLAGS) $< -o $@
 
 lib/libcore.a: $(lib-y)
 	$(Q)echo "AR        $@"
@@ -100,5 +103,5 @@ lib/libcore.a: $(lib-y)
 
 clean:
 	$(Q)rm -f lib/*.o lib/*.a
-	$(Q)rm -f src/*.o 
+	$(Q)rm -f init/*.o 
 	$(Q)rm -f WiLinker WiLinker.bin WiLinker.dis
