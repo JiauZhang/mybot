@@ -2,7 +2,7 @@
   FileVersion = 2
 [GENERAL]
   ConnectMode = 0
-  CurrentFile = "E:\linux\dapboot-v1.11-bluepill.bin"
+  CurrentFile = ""
   DataFileSAddr = 0x08000000
   GUIMode = 0
   HostName = ""
