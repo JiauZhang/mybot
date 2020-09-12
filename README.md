@@ -11,4 +11,5 @@ WiLinker - Wireless Linker
 
 ### TODO
 - [x] fine-tune Makefile
-- [ ] reorganize file structure
+- [x] reorganize file structure
+- [ ] add device class
