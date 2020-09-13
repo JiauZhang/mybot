@@ -1,5 +1,5 @@
 #include <wilinker/led.h>
-#include <wilinker/usart.h>
+#include <wilinker/serial.h>
 #include <wilinker/spi.h>
 #include <stm32f10x.h>
 #include <stdio.h>
@@ -14,12 +14,12 @@ int main(void)
 	unsigned char count = 'a';
 	
 	led_init();
-	usart_init();
+	serial_init();
 	spi_init();
 
 	while (1)
 	{
-		usart_puts("printf test");
+		serial_puts("serial puts: ");
 		led_on();
 		spi_write('s');
 		delay(0xfffff);
@@ -31,7 +31,7 @@ int main(void)
 		if (count > 'z')
 			count = 'a';
 		
-		usart_putc(count);
+		serial_putc(count);
 		delay(0xfffff);
 		delay(0xfffff);
 	}

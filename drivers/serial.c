@@ -22,6 +22,7 @@ void serial_register(struct serial_device *dev)
 void serial_initialize(void)
 {
 	stm32_serial_initialize();
+	serial_current = serial_devices;
 }
 
 void serial_stdio_init(void)
@@ -31,6 +32,16 @@ void serial_stdio_init(void)
 
 int serial_init(void)
 {
-	// return get_current()->start();
-	return 0;
+	serial_initialize();
+	return serial_current->start();
+}
+
+void serial_putc(const char c)
+{
+	serial_current->putc(c);
+}
+
+void serial_puts(const char *s)
+{
+	serial_current->puts(s);
 }
