@@ -1,17 +1,19 @@
-#include <wilinker/usart.h>
 #include <wilinker/serial.h>
 #include <misc.h>
 #include <stm32f10x.h>
-#include <stdio.h>
+
+int usart_init(void);
+void usart_putc(const char c);
+void usart_puts(const char *s);
 
 static struct serial_device stm32_serial_drv = {
 	.name   = "stm32_serial",
 	.start  = usart_init,
-	.stop   = NULL,
-	.setbrg = NULL,
+	.stop   = 0,
+	.setbrg = 0,
 	.putc   = usart_putc,
 	.puts   = usart_puts,
-	.getc   = NULL,
+	.getc   = 0,
 };
 
 int usart_init(void)

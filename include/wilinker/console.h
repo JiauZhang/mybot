@@ -7,9 +7,8 @@
 #define DEV_FLAGS_OUTPUT 0x00000002   /* Device can be used as output console */
 #define DEV_FLAGS_SYSTEM 0x80000000   /* Device is a system device */
 
-struct stdio_dev {
+struct stdio_device {
 	int flags;      /* Device flags: input/output/system */
-	int ext;        /* Supported extensions */
 	char name[16];  /* Device name */
 
 	int (*start) (void);
@@ -22,13 +21,14 @@ struct stdio_dev {
 	struct list_head list;
 };
 
-extern struct stdio_dev *stdio_devices[];
-extern char *stdio_names[3];
+// extern struct stdio_device *stdio_devices[];
+// extern char *stdio_names[3];
 
-extern int puts(const char *s);
-extern int printf(const char *fmt, ...);
+void puts(const char *s);
+void putc(const char c);
+// extern int printf(const char *fmt, ...);
 
-extern int stdio_register(struct stdio_dev * dev);
+extern int stdio_register(struct stdio_device *dev);
 extern int stdio_init(void);
 
 #endif
