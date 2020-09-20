@@ -54,12 +54,15 @@ void usart_putc(const char c)
 
 void usart_puts(const char *s)
 {
-	usart_putc('\n');
-	usart_putc('\r');
-
+	const char *c = s;
+	
 	while (*s != '\0') {
 		usart_putc(*s);
 		s++;
+	}
+	
+	if (s > c && *(s-1) == '\n') {
+		usart_putc('\r');
 	}
 }
 

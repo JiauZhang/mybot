@@ -1,5 +1,4 @@
 #include <wilinker/led.h>
-// #include <wilinker/serial.h>
 #include <wilinker/console.h>
 #include <wilinker/spi.h>
 #include <stm32f10x.h>
@@ -19,19 +18,19 @@ int main(void)
 
 	while (1)
 	{
-		puts("stdio puts: ");
+		prints("stdio puts: ");
+		printb(count);
+		prints("\n");
 		led_on();
-		spi_write('s');
+		spi_write(count);
 		delay(0xfffff);
 		delay(0xfffff);
 		led_off();
 		
-		if ('s' == spi_read())
-			count++;
+		count++;
 		if (count > 'z')
 			count = 'a';
 		
-		putc(count);
 		delay(0xfffff);
 		delay(0xfffff);
 	}

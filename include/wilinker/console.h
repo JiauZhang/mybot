@@ -21,12 +21,9 @@ struct stdio_device {
 	struct list_head list;
 };
 
-// extern struct stdio_device *stdio_devices[];
-// extern char *stdio_names[3];
-
-void puts(const char *s);
-void putc(const char c);
-// extern int printf(const char *fmt, ...);
+extern void prints(const char *s);
+extern void printc(const char c);
+extern void printb(const char c);
 
 extern int stdio_register(struct stdio_device *dev);
 extern int stdio_init(void);

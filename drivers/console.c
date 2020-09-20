@@ -7,16 +7,33 @@ static struct stdio_device *stdio_device;
 
 #define CONFIG_SYS_PBSIZE (128)
 
-void puts(const char *s)
+void prints(const char *s)
 {
 	if (stdio_device)
 		stdio_device->puts(s);
 }
 
-void putc(const char c)
+void printc(const char c)
 {
 	if (stdio_device)
 		stdio_device->putc(c);
+}
+
+void printb(const char c)
+{
+	char base = '0';
+	unsigned char uc = c;
+	unsigned char bit;
+	int i;
+	
+	for (i=7; i>=0; i--) {
+		bit = 0x01 << i;
+		
+		if (uc & bit)
+			printc(base+1);
+		else
+			printc(base);
+	}
 }
 
 static void stdio_null(void)
@@ -44,9 +61,4 @@ int stdio_init(void)
 		return stdio_device->start();
 	else
 		return -1;
-}
-
-int printf(const char *fmt, ...)
-{
-	return 0;
 }
