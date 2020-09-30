@@ -21,7 +21,7 @@ void printc(const char c)
 
 void printb(const char c)
 {
-	char base = '0';
+	unsigned char base = '0';
 	unsigned char uc = c;
 	unsigned char bit;
 	int i;
@@ -34,6 +34,26 @@ void printb(const char c)
 		else
 			printc(base);
 	}
+}
+
+void printh(const char c)
+{
+	unsigned char uc = c;
+	printc('0');
+	printc('x');
+	
+	unsigned char high = (uc & 0xf0) >> 4;
+	unsigned char low = uc & 0x0f;
+	
+	if (high < 10)
+		printc(high + '0');
+	else
+		printc(high - 10 + 'a');
+	
+	if (low < 10)
+		printc(low + '0');
+	else
+		printc(low - 10 + 'a');
 }
 
 static void stdio_null(void)

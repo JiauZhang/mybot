@@ -64,7 +64,7 @@ LDFLAGS = -mcpu=$(CPU) -mthumb -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS)
 
 # That's our default target when none is given on the command line
 PHONY := _all
-_all: WiLinker
+_all: WiLinker.bin
 
 obj-y := 
 lib-y := 

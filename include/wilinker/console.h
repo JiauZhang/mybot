@@ -24,6 +24,7 @@ struct stdio_device {
 extern void prints(const char *s);
 extern void printc(const char c);
 extern void printb(const char c);
+extern void printh(const char c);
 
 extern int stdio_register(struct stdio_device *dev);
 extern int stdio_init(void);
