@@ -64,7 +64,7 @@ LDFLAGS = -mcpu=$(CPU) -mthumb -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS)
 
 # That's our default target when none is given on the command line
 PHONY := _all
-_all: WiLinker.bin
+_all: WiLinker-Tx.bin WiLinker-Rx.bin
 
 obj-y := 
 lib-y := 
@@ -73,10 +73,19 @@ include lib/Makefile
 include init/Makefile
 include drivers/Makefile
 
-WiLinker: $(obj-y) lib/libcore.a
-	$(Q)$(CC) $(obj-y) -L lib -lcore $(LDFLAGS) -o $@
+obj-tx = $(filter-out drivers/nrf24l01-rx.o,$(obj-y))
+WiLinker-Tx.elf: $(obj-tx) lib/libcore.a
+	$(Q)$(CC) $(obj-tx) -L lib -lcore $(LDFLAGS) -o $@
 	$(Q)echo "\033[31m$@\033[0m is ready!"
-WiLinker.bin: WiLinker
+obj-rx = $(filter-out drivers/nrf24l01-tx.o,$(obj-y))
+WiLinker-Rx.elf: $(obj-rx) lib/libcore.a
+	$(Q)$(CC) $(obj-rx) -L lib -lcore $(LDFLAGS) -o $@
+	$(Q)echo "\033[31m$@\033[0m is ready!"
+WiLinker-Tx.bin: WiLinker-Tx.elf
+	$(Q)echo "OBJCOPY   $@"
+	$(Q)$(OBJCOPY) -O binary -R .comment -S $< $@
+	$(Q)echo "\033[31m$@\033[0m is ready!"
+WiLinker-Rx.bin: WiLinker-Rx.elf
 	$(Q)echo "OBJCOPY   $@"
 	$(Q)$(OBJCOPY) -O binary -R .comment -S $< $@
 	$(Q)echo "\033[31m$@\033[0m is ready!"
@@ -103,5 +112,6 @@ lib/libcore.a: $(lib-y)
 
 clean:
 	$(Q)rm -f lib/*.o lib/*.a
-	$(Q)rm -f init/*.o 
+	$(Q)rm -f init/*.o
+	@(Q)rm -f drivers/*.o
 	$(Q)rm -f WiLinker WiLinker.bin WiLinker.dis

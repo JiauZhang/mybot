@@ -6,5 +6,6 @@
 void spi_init();
 u8 spi_read();
 void spi_write(u8 data);
+u8 SPI_RW(u8 dat);
 
 #endif

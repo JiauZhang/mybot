@@ -1,6 +1,7 @@
 #include <wilinker/led.h>
 #include <wilinker/console.h>
 #include <wilinker/spi.h>
+#include <wilinker/nrf24l01.h>
 #include <stm32f10x.h>
 
 void delay(uint32_t nCount)
@@ -8,29 +9,27 @@ void delay(uint32_t nCount)
   for(; nCount != 0; nCount--);
 }
 
+
+
 int main(void)
 {
-	unsigned char count = 'a';
-	
 	led_init();
 	stdio_init();
+	prints("console is avaiable.\n");
 	spi_init();
+	prints("SPI1 has initialized.\n");
+	nrf24l01_init();
+	prints("nrf24l01 has initialized!\n");
 
 	while (1)
 	{
-		prints("stdio puts: ");
-		printb(count);
-		prints("\n");
 		led_on();
-		spi_write(count);
 		delay(0xfffff);
 		delay(0xfffff);
+		
+		remote_control();
+		
 		led_off();
-		
-		count++;
-		if (count > 'z')
-			count = 'a';
-		
 		delay(0xfffff);
 		delay(0xfffff);
 	}
