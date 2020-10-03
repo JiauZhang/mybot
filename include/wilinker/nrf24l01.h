@@ -3,18 +3,16 @@
 
 #include <stm32f10x.h>
 
-//24L01操作线
-#define Set_NRF24L01_CSN     (GPIOB->BSRR = GPIO_Pin_12)    // PB12
-#define Clr_NRF24L01_CSN     (GPIOB->BRR = GPIO_Pin_12)    // PB12
-#define Set_NRF24L01_CE      (GPIOA->BSRR = GPIO_Pin_11)    // PB1
-#define Clr_NRF24L01_CE      (GPIOA->BRR = GPIO_Pin_11)    // PB1
-#define READ_NRF24L01_IRQ    (GPIOA->IDR&GPIO_Pin_12)      //IRQ主机数据输入 PB0
+// nrf24l01 引脚连线
+#define GPIOB_PIN_CSN GPIO_Pin_13
+#define GPIOA_PIN_CE  GPIO_Pin_11
+#define GPIOA_PIN_IRQ GPIO_Pin_12
 
 //NRF24L01发送接收数据宽度定义
-#define TX_ADR_WIDTH    5                               //5字节的地址宽度
-#define RX_ADR_WIDTH    5                               //5字节的地址宽度
-#define TX_PLOAD_WIDTH  32                              //20字节的用户数据宽度
-#define RX_PLOAD_WIDTH  32                              //20字节的用户数据宽度
+#define TX_ADR_WIDTH    5     //5字节的地址宽度
+#define RX_ADR_WIDTH    5     //5字节的地址宽度
+#define TX_PLOAD_WIDTH  32    //20字节的用户数据宽度
+#define RX_PLOAD_WIDTH  32    //20字节的用户数据宽度
 
 //NRF24L01寄存器操作命令
 #define SPI_READ_REG    0x00  //读配置寄存器,低5位为寄存器地址
@@ -27,7 +25,7 @@
 #define NOP             0xFF  //空操作,可以用来读状态寄存器
 
 //SPI(NRF24L01)寄存器地址
-#define NCONFIG          0x00 //配置寄存器地址;bit0:1接收模式,0发射模式;bit1:电选择;bit2:CRC模式;bit3:CRC使能;
+#define NCONFIG         0x00  //配置寄存器地址;bit0:1接收模式,0发射模式;bit1:电选择;bit2:CRC模式;bit3:CRC使能;
                               //bit4:中断MAX_RT(达到最大重发次数中断)使能;bit5:中断TX_DS使能;bit6:中断RX_DR使能
 #define EN_AA           0x01  //使能自动应答功能  bit0~5,对应通道0~5
 #define EN_RXADDR       0x02  //接收地址允许,bit0~5,对应通道0~5
@@ -37,9 +35,9 @@
 #define RF_SETUP        0x06  //RF寄存器;bit3:传输速率(0:1Mbps,1:2Mbps);bit2:1,发射功率;bit0:低噪声放大器增益
 #define STATUS          0x07  //状态寄存器;bit0:TX FIFO满标志;bit3:1,接收数据通道号(最大:6);bit4,达到最多次重发
                               //bit5:数据发送完成中断;bit6:接收数据中断;
-#define MAX_TX  	    0x10  //达到最大发送次数中断
-#define TX_OK       	0x20  //TX发送完成中断
-#define RX_OK   	    0x40  //接收到数据中断
+#define MAX_TX          0x10  //达到最大发送次数中断
+#define TX_OK           0x20  //TX发送完成中断
+#define RX_OK           0x40  //接收到数据中断
 #define OBSERVE_TX      0x08  //发送检测寄存器,bit7:4,数据包丢失计数器;bit3:0,重发计数器
 #define CD              0x09  //载波检测寄存器,bit0,载波检测;
 #define RX_ADDR_P0      0x0A  //数据通道0接收地址,最大长度5个字节,低字节在前
@@ -59,16 +57,23 @@
                               //bit4,TX FIFO空标志;bit5,TX FIFO满标志;bit6,1,循环发送上一数据包.0,不循环;
 
 void nrf24l01_init(void);
+u8 nrf24l01_check(void);
 void set_mode(void);
 void remote_control();
 
-u8 NRF24L01_Write_Buf(u8 regaddr, u8 *pBuf, u8 datalen); //写数据区
-u8 NRF24L01_Read_Buf(u8 regaddr, u8 *pBuf, u8 datalen);  //读数据区
-u8 NRF24L01_Read_Reg(u8 regaddr);		                 //读寄存器
-u8 NRF24L01_Write_Reg(u8 regaddr, u8 data);              //写寄存器
-u8 NRF24L01_Check(void);                                 //检查NRF24L01是否在位
-u8 NRF24L01_TxPacket(u8 *txbuf);                         //发送一个包的数据
-u8 NRF24L01_RxPacket(u8 *rxbuf);                         //接收一个包的数据
+void nrf24l01_deselect_chip();
+void nrf24l01_select_chip();
+void nrf24l01_enable_chip();
+void nrf24l01_disable_chip();
+
+u8 nrf24l01_write_buf(u8 regaddr, u8 *pBuf, u8 datalen); //写数据区
+u8 nrf24l01_write_reg(u8 regaddr, u8 data);              //写寄存器
+
+u8 nrf24l01_read_buf(u8 regaddr, u8 *pBuf, u8 datalen);  //读数据区
+u8 nrf24l01_read_reg(u8 regaddr);                        //读寄存器
+
+u8 nrf24l01_send_packet(u8 *txbuf);                      //发送一个包的数据
+u8 nrf24l01_receive_packet(u8 *rxbuf);                   //接收一个包的数据
 
 #endif
 
