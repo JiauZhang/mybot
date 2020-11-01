@@ -1,5 +1,5 @@
-#include <wilinker/nrf24l01.h>
-#include <wilinker/spi.h>
+#include <devices/nrf24l01.h>
+#include <devices/spi.h>
 
 void nrf24l01_deselect_chip()
 {

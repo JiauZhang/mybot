@@ -1,7 +1,7 @@
 #ifndef __CONSOLE_H__
 #define __CONSOLE_H__
 
-#include <wilinker/list.h>
+#include <common/list.h>
 
 #define DEV_FLAGS_INPUT	 0x00000001   /* Device can be used as input console */
 #define DEV_FLAGS_OUTPUT 0x00000002   /* Device can be used as output console */

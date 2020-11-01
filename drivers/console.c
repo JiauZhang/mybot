@@ -1,5 +1,5 @@
-#include <wilinker/console.h>
-#include <wilinker/serial.h>
+#include <devices/console.h>
+#include <devices/serial.h>
 
 static struct stdio_device *stdio_device;
 // struct stdio_dev *stdio_devices[] = { 0, 0, 0 };

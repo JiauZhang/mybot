@@ -1,5 +1,5 @@
-#include <wilinker/spi.h>
-#include <wilinker/console.h>
+#include <devices/spi.h>
+#include <devices/console.h>
 
 void spi_init(void)
 {

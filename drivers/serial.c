@@ -1,5 +1,5 @@
-#include <wilinker/serial.h>
-#include <wilinker/console.h>
+#include <devices/serial.h>
+#include <devices/console.h>
 
 static struct serial_device *serial_devices;
 static struct serial_device *serial_current;

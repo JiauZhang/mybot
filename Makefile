@@ -27,7 +27,7 @@ obj := $(objtree)
 
 export srctree objtree
 
-# Look for make include files relative to root of usboot src
+# Look for make include files relative to root of FiBot src
 MAKEFLAGS += --include-dir=$(srctree)
 
 ARCH = arm

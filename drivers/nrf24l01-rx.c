@@ -1,5 +1,5 @@
-#include <wilinker/nrf24l01.h>
-#include <wilinker/console.h>
+#include <devices/nrf24l01.h>
+#include <devices/console.h>
 
 uint8_t RC_rxData[32];
 // 接收地址RX_ADDR_P0 == RX_ADDR
