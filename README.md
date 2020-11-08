@@ -1,3 +1,6 @@
+Make Your First Robot
+=====================
+
 ### 硬件
 1. stm32f103c8t6
 2. nrf24l01
@@ -11,3 +14,5 @@
 - [x] fine-tune Makefile
 - [x] reorganize file structure
 - [x] add device class
+- [ ] add shell interface
+- [ ] add pwm device
