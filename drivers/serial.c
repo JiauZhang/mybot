@@ -33,7 +33,7 @@ static struct stdio_device serial_stdio_drv = {
 	.stop   = 0,
 	.putc   = serial_putc,
 	.puts   = serial_puts,
-	.getc   = 0,
+	.getc   = serial_getc,
 	.tstc   = 0,
 };
 
@@ -56,4 +56,9 @@ void serial_putc(const char c)
 void serial_puts(const char *s)
 {
 	serial_current->puts(s);
+}
+
+char serial_getc()
+{
+	return serial_current->getc();
 }

@@ -7,7 +7,7 @@ struct serial_device {
 	int (*start)(void);
 	int (*stop)(void);
 	void (*setbrg)(void);
-	int (*getc)(void);
+	char (*getc)(void);
 	void (*putc)(const char c);
 	void (*puts)(const char *s);
 
@@ -21,5 +21,7 @@ extern int serial_init(void);
 
 extern void serial_putc(const char c);
 extern void serial_puts(const char *s);
+
+extern char serial_getc();
 
 #endif

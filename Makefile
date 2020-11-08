@@ -52,7 +52,7 @@ ASFLAGS = -mcpu=$(CPU) -mthumb -c
 ASFLAGS += -Wall -fdata-sections -ffunction-sections
 
 # CFLAGS = -mcpu=$(CPU) -mthumb -Os -DUSE_HAL_DRIVER -DSTM32F103xB
-CFLAGS = -mcpu=$(CPU) -mthumb -c
+CFLAGS = -mcpu=$(CPU) -mthumb -c -O2
 CFLAGS += -Wall -fdata-sections -ffunction-sections
 CFLAGS += -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER
 CFLAGS += -Iinclude
@@ -64,7 +64,7 @@ LDFLAGS = -mcpu=$(CPU) -mthumb -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS)
 
 # That's our default target when none is given on the command line
 PHONY := _all
-_all: WiLinker-Tx.bin WiLinker-Rx.bin
+_all: help
 
 obj-y := 
 lib-y := 
@@ -73,30 +73,8 @@ include lib/Makefile
 include init/Makefile
 include drivers/Makefile
 
-obj-tx = $(filter-out drivers/nrf24l01-rx.o,$(obj-y))
-WiLinker-Tx.elf: $(obj-tx) lib/libcore.a
-	$(Q)$(CC) $(obj-tx) -L lib -lcore $(LDFLAGS) -o $@
-	$(Q)echo "\033[31m$@\033[0m is ready!"
-obj-rx = $(filter-out drivers/nrf24l01-tx.o,$(obj-y))
-WiLinker-Rx.elf: $(obj-rx) lib/libcore.a
-	$(Q)$(CC) $(obj-rx) -L lib -lcore $(LDFLAGS) -o $@
-	$(Q)echo "\033[31m$@\033[0m is ready!"
-WiLinker-Tx.bin: WiLinker-Tx.elf
-	$(Q)echo "OBJCOPY   $@"
-	$(Q)$(OBJCOPY) -O binary -R .comment -S $< $@
-	$(Q)echo "\033[31m$@\033[0m is ready!"
-WiLinker-Rx.bin: WiLinker-Rx.elf
-	$(Q)echo "OBJCOPY   $@"
-	$(Q)$(OBJCOPY) -O binary -R .comment -S $< $@
-	$(Q)echo "\033[31m$@\033[0m is ready!"
-WiLinker.hex: WiLinker
-	$(Q)echo "OBJCOPY   $@"
-	$(Q)$(OBJCOPY) -O -ihex $< $@
-	$(Q)echo "\033[31m$@\033[0m is ready!"
-WiLinker.dis: WiLinker
-	$(Q)echo "OBJDUMP   $@"
-	$(Q)$(OBJDUMP) -D -m arm $< > $@
-	$(Q)echo "\033[31m$@\033[0m is ready!"
+# include project specific Makefile
+-include projects.include
 
 %.o: %.S
 	$(Q)echo "AS        $@"
@@ -114,4 +92,7 @@ clean:
 	$(Q)rm -f lib/*.o lib/*.a
 	$(Q)rm -f init/*.o
 	@(Q)rm -f drivers/*.o
-	$(Q)rm -f WiLinker WiLinker.bin WiLinker.dis
+
+help:
+	@echo "\033[31mStep 1\033[0m: include YOUR projects' Makefile in projects.include"
+	@echo "\033[31mStep 2\033[0m: execute \"make [targets]\" to build your projects"

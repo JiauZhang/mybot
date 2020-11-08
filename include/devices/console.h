@@ -16,7 +16,7 @@ struct stdio_device {
 	void (*putc) (const char c);    /* To put a char */
 	void (*puts) (const char *s);   /* To put a string (accelerator) */
 	int (*tstc) (void);             /* To test if a char is ready... */
-	int (*getc) (void);             /* To get that char */
+	char (*getc) (void);             /* To get that char */
 
 	struct list_head list;
 };
@@ -25,6 +25,8 @@ extern void prints(const char *s);
 extern void printc(const char c);
 extern void printb(const char c);
 extern void printh(const char c);
+
+extern char getc();
 
 extern int stdio_register(struct stdio_device *dev);
 extern int stdio_init(void);

@@ -56,6 +56,16 @@ void printh(const char c)
 		printc(low - 10 + 'a');
 }
 
+char getc()
+{
+	char c;
+	
+	if (stdio_device)
+		c = stdio_device->getc();
+	
+	return c;
+}
+
 static void stdio_null(void)
 {
 }

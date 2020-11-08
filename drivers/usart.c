@@ -5,6 +5,7 @@
 int usart_init(void);
 void usart_putc(const char c);
 void usart_puts(const char *s);
+char usart_getc();
 
 static struct serial_device stm32_serial_drv = {
 	.name   = "stm32_serial",
@@ -13,7 +14,7 @@ static struct serial_device stm32_serial_drv = {
 	.setbrg = 0,
 	.putc   = usart_putc,
 	.puts   = usart_puts,
-	.getc   = 0,
+	.getc   = usart_getc,
 };
 
 int usart_init(void)
@@ -64,6 +65,12 @@ void usart_puts(const char *s)
 	if (s > c && *(s-1) == '\n') {
 		usart_putc('\r');
 	}
+}
+
+char usart_getc()
+{
+	while (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET);
+	return (char)USART_ReceiveData(USART1);
 }
 
 void stm32_serial_initialize(void)
