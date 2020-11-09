@@ -1,16 +1,12 @@
-#include <devices/console.h>
+#include <common/console.h>
 #include <common/project.h>
+#include <common/shell.h>
 
 void start_project(void)
 {
-	prints("FiBot default empty project!\n");
-	prints("echo>");
+	show_prompt();
 	
-	char echo;
 	while (1) {
-		printc('+');
-		echo = getc();
-		printc(echo);
-		printc('+');
+		read_line();
 	}
 }

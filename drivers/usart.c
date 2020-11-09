@@ -1,4 +1,4 @@
-#include <devices/serial.h>
+#include <common/serial.h>
 #include <misc.h>
 #include <stm32f10x.h>
 

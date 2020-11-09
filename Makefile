@@ -52,7 +52,7 @@ ASFLAGS = -mcpu=$(CPU) -mthumb -c
 ASFLAGS += -Wall -fdata-sections -ffunction-sections
 
 # CFLAGS = -mcpu=$(CPU) -mthumb -Os -DUSE_HAL_DRIVER -DSTM32F103xB
-CFLAGS = -mcpu=$(CPU) -mthumb -c -O2
+CFLAGS = -mcpu=$(CPU) -mthumb -c
 CFLAGS += -Wall -fdata-sections -ffunction-sections
 CFLAGS += -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER
 CFLAGS += -Iinclude
@@ -71,7 +71,7 @@ lib-y :=
 
 include lib/Makefile
 include init/Makefile
-include drivers/Makefile
+include common/Makefile
 
 # include project specific Makefile
 -include projects.include
