@@ -1,5 +1,5 @@
-#include <devices/serial.h>
-#include <devices/console.h>
+#include <common/serial.h>
+#include <common/console.h>
 
 static struct serial_device *serial_devices;
 static struct serial_device *serial_current;
@@ -50,15 +50,32 @@ int serial_init(void)
 
 void serial_putc(const char c)
 {
-	serial_current->putc(c);
+	if (serial_current && serial_current->putc)
+		serial_current->putc(c);
 }
 
 void serial_puts(const char *s)
 {
-	serial_current->puts(s);
+	if (!serial_current || !serial_current->putc)
+		return;
+	
+	const char *c = s;
+	
+	while (*s != '\0') {
+		serial_current->putc(*s);
+		s++;
+	}
+	
+	if (s > c && *(s-1) == '\n') {
+		serial_current->putc('\r');
+	}
 }
 
 char serial_getc()
 {
-	return serial_current->getc();
+	char c = 0xff;
+	if (serial_current && serial_current->getc)
+		c = serial_current->getc();
+	
+	return c;
 }
