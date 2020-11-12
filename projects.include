@@ -1,1 +1,1 @@
-include projects/default/Makefile
+project-dirs := default

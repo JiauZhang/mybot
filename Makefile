@@ -75,6 +75,9 @@ include common/Makefile
 
 # include project specific Makefile
 -include projects.include
+ifneq ($(project-dirs),)
+include projects/$(project-dirs)/Makefile
+endif
 
 %.o: %.S
 	$(Q)echo "AS        $@"
