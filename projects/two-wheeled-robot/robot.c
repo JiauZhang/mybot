@@ -5,7 +5,7 @@
 
 void start_project()
 {
-	int duty = 50;
+	int duty = 1;
 	
 	prints("start pwm devices......\n");
 	start_pwm();
@@ -13,10 +13,14 @@ void start_project()
 	prints("FiBot> ");
 	while (1) {
 		read_line();
-		set_pwm1_duty(duty);
-		duty += 100;
+		if (duty) {
+			set_pwm1_duty(1000);
+			set_pwm2_duty(0);
+		} else {
+			set_pwm1_duty(0);
+			set_pwm2_duty(1000);
+		}
 		
-		if (duty >= 650)
-			duty = 50;
+		duty = !duty;
 	}
 }

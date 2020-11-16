@@ -24,7 +24,7 @@ void start_pwm()
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	
-	TIM_TimeBaseStructure.TIM_Period = 665;
+	TIM_TimeBaseStructure.TIM_Period = 999;
 	prescale = (SystemCoreClock / 24000000) - 1;
 	TIM_TimeBaseStructure.TIM_Prescaler = prescale;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
@@ -39,8 +39,10 @@ void start_pwm()
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
 	TIM_OC1Init(TIM3, &TIM_OCInitStructure);
-
 	TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Enable);
+	
+	TIM_OC2Init(TIM3, &TIM_OCInitStructure);
+	TIM_OC2PreloadConfig(TIM3, TIM_OCPreload_Enable);
 
 	TIM_Cmd(TIM3, ENABLE);
 }
