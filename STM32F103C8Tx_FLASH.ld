@@ -99,6 +99,7 @@ SECTIONS
     . = ALIGN(4);
     *(.rodata)         /* .rodata sections (constants, strings, etc.) */
     *(.rodata*)        /* .rodata* sections (constants, strings, etc.) */
+    KEEP(*(SORT(.fibot_cmd_tbl*)));
     . = ALIGN(4);
   } >FLASH
 
