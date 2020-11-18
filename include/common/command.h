@@ -14,4 +14,7 @@ struct cmd_tbl {
         #__name, __usage, __help, __cmd                          \
     }
 
+int do_help();
+struct cmd_tbl *find_cmd(const char *name);
+
 #endif
