@@ -11,8 +11,6 @@ Make Your First Robot
 2. J-Flash
 
 ### TODO
-- [x] fine-tune Makefile
-- [x] reorganize file structure
-- [x] add device class
-- [ ] add shell interface
+- [x] [TODO history](doc/TODO.md)
+- [ ] add shell command interaction
 - [ ] add pwm device
