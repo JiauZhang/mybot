@@ -74,7 +74,7 @@ char usart_getc()
 	return (char)USART_ReceiveData(USART1);
 }
 
-void stm32_serial_initialize(void)
+void ll_serial_initialize(void)
 {
 	serial_register(&stm32_serial_drv);
 }

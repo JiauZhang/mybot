@@ -12,7 +12,7 @@ static void serial_null(void)
 	void name(void)             \
 		__attribute__((weak, alias("serial_null")));
 
-serial_initfunc(stm32_serial_initialize);
+serial_initfunc(ll_serial_initialize);
 
 void serial_register(struct serial_device *dev)
 {
@@ -22,7 +22,7 @@ void serial_register(struct serial_device *dev)
 
 void serial_initialize(void)
 {
-	stm32_serial_initialize();
+	ll_serial_initialize();
 	serial_current = serial_devices;
 }
 
