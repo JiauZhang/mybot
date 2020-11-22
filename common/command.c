@@ -1,5 +1,6 @@
 #include <common/command.h>
 #include <common/console.h>
+#include <common/shell.h>
 
 extern unsigned int _cmd_tbl_start;
 extern unsigned int _cmd_tbl_end;

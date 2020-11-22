@@ -8,17 +8,17 @@ int do_test(struct cmd_tbl *cmd, int argc, char *const argv[])
 	prints("do_test\n");
 	return 0;
 }
-
 FIBOT_CMD(test, do_test, "test", "test");
+
+extern char cmd_line[CMD_LINE_SIZE];
+extern char *argv[CMD_LINE_MAX_ARGS+1];
 
 void start_project(void)
 {
-	show_prompt();
-	
-	do_help(0, 0, 0);
-	
 	while (1) {
-		__fibot_cmd_test.cmd(0, 0, 0);
+		show_prompt();
 		read_line();
+		parse_line(cmd_line, argv);
+		print_argv(argv);
 	}
 }

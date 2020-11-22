@@ -2,6 +2,8 @@
 #include <common/console.h>
 
 char cmd_line[CMD_LINE_SIZE] = {'\0'};
+char *argv[CMD_LINE_MAX_ARGS+1] = {0};
+
 const char FIBOT_PROMPT[] = "FiBot> ";
 
 void show_prompt()
@@ -9,12 +11,11 @@ void show_prompt()
 	prints(FIBOT_PROMPT);
 }
 
-void read_line()
+int read_line()
 {
 	cmd_line[0] = '\0';
 	
-	unsigned char exec, count;
-	exec = 1;
+	unsigned int count;
 	count = 0;
 	char c = getc();
 	
@@ -27,19 +28,57 @@ void read_line()
 			prints("\n");
 			prints("Your input is TOO long!\n");
 			show_prompt();
-			exec = 0;
 			break;
 		}
 		
 		c = getc();
 	}
 	
-	if (exec) {
-		cmd_line[count] = '\0';
+	prints("\n");
+	cmd_line[count] = '\0';
+	
+	return count;
+}
+
+int parse_line(char *cmdline, char *argv[])
+{
+	int argc = 0;
+	
+	while (argc < CMD_LINE_MAX_ARGS) {
+		while (*cmdline == ' ')
+			cmdline++;
+		
+		if (*cmdline == '\0') {
+			argv[argc] = 0;
+			return argc;
+		}
+		
+		argv[argc++] = cmdline;
+		
+		while ((*cmdline != '\0') && (*cmdline != ' '))
+			cmdline++;
+		
+		if (*cmdline == '\0') {
+			argv[argc] = 0;
+			return argc;
+		}
+		
+		*(cmdline++) = '\0';
+	}
+	
+	return argc;
+}
+
+void print_argv(char *argv[])
+{
+	int argc = 0;
+	
+	while (*argv != 0) {
+		prints("argv[");
+		printc((argc++)+'0');
+		prints("]: ");
+		prints(*argv);
 		prints("\n");
-		prints("running a cmdline: ");
-		prints(cmd_line);
-		prints("\n");
-		show_prompt();
+		argv++;
 	}
 }
