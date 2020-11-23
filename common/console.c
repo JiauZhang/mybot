@@ -1,5 +1,6 @@
 #include <common/console.h>
 #include <common/serial.h>
+#include <stdarg.h>
 
 static struct stdio_device *stdio_device;
 // struct stdio_dev *stdio_devices[] = { 0, 0, 0 };
@@ -7,10 +8,55 @@ static struct stdio_device *stdio_device;
 
 #define CONFIG_SYS_PBSIZE (128)
 
+/* deprecated
 void prints(const char *s)
 {
 	if (stdio_device)
 		stdio_device->puts(s);
+}
+*/
+
+int prints(const char *fmt, ...)
+{
+	va_list args;
+	int num;
+	char *str;
+	if (stdio_device && stdio_device->putc && stdio_device->puts) {
+		va_start(args, fmt);
+		
+		for (; *fmt; fmt++) {
+			if (*fmt != '%') {
+				stdio_device->putc(*fmt);
+				if (*fmt == '\n')
+					stdio_device->putc('\r');
+				continue;
+			}
+			
+			++fmt;
+			switch (*fmt) {
+			case 's':
+				str = va_arg(args, char *);
+				stdio_device->puts(str);
+				continue;
+			
+			case 'd':
+				num = va_arg(args, int);
+				stdio_device->putc(num+'0');
+				continue;
+			
+			default:
+				stdio_device->putc('%');
+				if (*fmt)
+					stdio_device->putc(*fmt);
+				else
+					--fmt;
+			}
+		}
+		
+		return 0;
+	}
+	
+	return -1;
 }
 
 void printc(const char c)

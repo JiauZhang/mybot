@@ -21,14 +21,15 @@ struct stdio_device {
 	struct list_head list;
 };
 
-extern void prints(const char *s);
-extern void printc(const char c);
-extern void printb(const char c);
-extern void printh(const char c);
+int prints(const char *fmt, ...);
 
-extern char getc();
+void printc(const char c);
+void printb(const char c);
+void printh(const char c);
+
+char getc();
 
 extern int stdio_register(struct stdio_device *dev);
-extern int stdio_init(void);
+int stdio_init(void);
 
 #endif

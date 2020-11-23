@@ -15,7 +15,10 @@ extern char *argv[CMD_LINE_MAX_ARGS+1];
 
 void start_project(void)
 {
+	unsigned int loop = 0;
+	prints("This is the default project!\n");
 	while (1) {
+		prints("loop: %d\n", loop++);
 		show_prompt();
 		read_line();
 		parse_line(cmd_line, argv);
