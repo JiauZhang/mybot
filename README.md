@@ -12,5 +12,4 @@ Make Your First Robot
 
 ### TODO
 - [x] [TODO history](doc/TODO.md)
-- [ ] add shell command interaction
 - [ ] add pwm device

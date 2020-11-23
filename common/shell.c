@@ -15,8 +15,7 @@ int read_line()
 {
 	cmd_line[0] = '\0';
 	
-	unsigned int count;
-	count = 0;
+	unsigned int count = 0;
 	char c = getc();
 	
 	while (c != KEY_ENTER) {
@@ -25,8 +24,7 @@ int read_line()
 			cmd_line[count] = c;
 			count++;
 		} else {
-			prints("\n");
-			prints("Your input is TOO long!\n");
+			prints("\nYour input is TOO long!\n");
 			show_prompt();
 			break;
 		}
@@ -73,12 +71,6 @@ void print_argv(char *argv[])
 {
 	int argc = 0;
 	
-	while (*argv != 0) {
-		prints("argv[");
-		printc((argc++)+'0');
-		prints("]: ");
-		prints(*argv);
-		prints("\n");
-		argv++;
-	}
+	while (*argv != 0)
+		prints("argv[%d]: %s\n", argc++, *(argv++));
 }

@@ -16,6 +16,6 @@ struct cmd_tbl {
 
 int do_help();
 struct cmd_tbl *find_cmd_tbl(const char *name);
-int run_cmd_tbl(struct cmd_tbl *cmd, int argc, char * const argv[]);
+int run_cmd(struct cmd_tbl *cmd, int argc, char * const argv[]);
 
 #endif

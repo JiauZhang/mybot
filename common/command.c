@@ -43,14 +43,14 @@ struct cmd_tbl *find_cmd_tbl(const char *name)
 	return cmd;
 }
 
-int run_cmd_tbl(struct cmd_tbl *cmd, int argc, char * const argv[])
+int run_cmd(struct cmd_tbl *cmd, int argc, char * const argv[])
 {
 	return cmd->cmd(cmd, argc, argv);
 }
 
 int do_help(struct cmd_tbl *cmd, int argc, char *const argv[])
 {
-	char *name;
+	char *name, *usage, *help;
 	struct cmd_tbl *cmd_tbl_start = get_cmd_tbl_start();
 	struct cmd_tbl *cmd_tbl_end   = get_cmd_tbl_end();
 	
@@ -59,8 +59,9 @@ int do_help(struct cmd_tbl *cmd, int argc, char *const argv[])
 		
 		do {
 			name = cmd_tbl_start->name;
-			prints(name);
-			prints("\n");
+			usage = cmd_tbl_start->usage;
+			help = cmd_tbl_start->help;
+			prints("%s   - %s    %s\n", name, usage, help);
 			cmd_tbl_start = get_cmd_tbl_next(cmd_tbl_start, cmd_tbl_end);
 		} while (cmd_tbl_start != cmd_tbl_end);
 		
@@ -70,4 +71,19 @@ int do_help(struct cmd_tbl *cmd, int argc, char *const argv[])
 		return -1;
 	}
 }
-FIBOT_CMD(help, do_help, "?", "show help info");
+FIBOT_CMD(help, do_help, "help", "show help info");
+
+int do_clear(struct cmd_tbl *cmd, int argc, char *const argv[])
+{
+	prints("\x1b[2J\x1b[H");
+	return 0;
+}
+FIBOT_CMD(clear, do_clear, "clear", "clear screen");
+
+int do_reboot(struct cmd_tbl *cmd, int argc, char *const argv[])
+{
+	prints("Not Implemented Error!\n");
+	
+	return -1;
+}
+FIBOT_CMD(reboot, do_reboot, "reboot", "reboot the system!");

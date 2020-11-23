@@ -50,6 +50,7 @@ int prints(const char *fmt, ...)
 					stdio_device->putc(*fmt);
 				else
 					--fmt;
+				continue;
 			}
 		}
 		
