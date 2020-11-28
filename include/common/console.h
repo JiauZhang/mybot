@@ -23,9 +23,12 @@ struct stdio_device {
 
 int prints(const char *fmt, ...);
 
-void printc(const char c);
-void printb(const char c);
-void printh(const char c);
+int printc(const char c);
+int printb(const char c);
+int printh(const char c);
+
+int printui(unsigned int ui);
+int printi(int i);
 
 char getc();
 

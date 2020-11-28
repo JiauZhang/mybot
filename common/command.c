@@ -1,3 +1,7 @@
+/*
+ * https://github.com/JiauZhang/FiBot/common/command.c
+ */
+
 #include <common/command.h>
 #include <common/console.h>
 #include <common/string.h>
@@ -50,28 +54,41 @@ int run_cmd(struct cmd_tbl *cmd, int argc, char * const argv[])
 
 int do_help(struct cmd_tbl *cmd, int argc, char *const argv[])
 {
-	char *name, *usage, *help;
+	char *name, *help;
+	int status = 0;
 	struct cmd_tbl *cmd_tbl_start = get_cmd_tbl_start();
 	struct cmd_tbl *cmd_tbl_end   = get_cmd_tbl_end();
 	
-	if (cmd_tbl_start < cmd_tbl_end) {
-		prints("FiBot shell commands:\n");
+	if (argc == 1) {
+		if (cmd_tbl_start < cmd_tbl_end) {
+			prints("FiBot shell commands:\n");
+			
+			do {
+				name = cmd_tbl_start->name;
+				help = cmd_tbl_start->help;
+				prints("%s   - %s\n", name, help);
+				cmd_tbl_start = get_cmd_tbl_next(cmd_tbl_start, cmd_tbl_end);
+			} while (cmd_tbl_start != cmd_tbl_end);
+		} else {
+			prints("No commands availble!\n");
+		}
+	} else if (argc == 2) {
+		cmd_tbl_start = find_cmd_tbl(argv[1]);
 		
-		do {
-			name = cmd_tbl_start->name;
-			usage = cmd_tbl_start->usage;
-			help = cmd_tbl_start->help;
-			prints("%s   - %s    %s\n", name, usage, help);
-			cmd_tbl_start = get_cmd_tbl_next(cmd_tbl_start, cmd_tbl_end);
-		} while (cmd_tbl_start != cmd_tbl_end);
-		
-		return 0;
+		if (cmd_tbl_start) {
+			prints("%s\n", cmd_tbl_start->usage);
+		} else {
+			prints("No command match \'%s\'.\n", argv[1]);
+			status = -1;
+		}
 	} else {
-		prints("No commands availble!\n");
-		return -1;
+		prints("Try \'help help\' for more info.\n");
+		status = -2;
 	}
+	
+	return status;
 }
-FIBOT_CMD(help, do_help, "help", "show help info");
+FIBOT_CMD(help, do_help, "help [command]", "show command\'s help info");
 
 int do_clear(struct cmd_tbl *cmd, int argc, char *const argv[])
 {
@@ -82,8 +99,11 @@ FIBOT_CMD(clear, do_clear, "clear", "clear screen");
 
 int do_reboot(struct cmd_tbl *cmd, int argc, char *const argv[])
 {
-	prints("Not Implemented Error!\n");
+	extern void Reset_Handler(void);
+	
+	prints("System is rebooting from %d.\n", Reset_Handler);	
+	Reset_Handler();
 	
 	return -1;
 }
-FIBOT_CMD(reboot, do_reboot, "reboot", "reboot the system!");
+FIBOT_CMD(reboot, do_reboot, "reboot", "reboot the system");

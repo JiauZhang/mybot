@@ -1,3 +1,7 @@
+/*
+ * https://github.com/JiauZhang/FiBot/common/console.c
+ */
+
 #include <common/console.h>
 #include <common/serial.h>
 #include <stdarg.h>
@@ -7,14 +11,6 @@ static struct stdio_device *stdio_device;
 // char *stdio_names[3] = { "stdin", "stdout", "stderr" };
 
 #define CONFIG_SYS_PBSIZE (128)
-
-/* deprecated
-void prints(const char *s)
-{
-	if (stdio_device)
-		stdio_device->puts(s);
-}
-*/
 
 int prints(const char *fmt, ...)
 {
@@ -60,47 +56,64 @@ int prints(const char *fmt, ...)
 	return -1;
 }
 
-void printc(const char c)
+int printc(const char c)
 {
-	if (stdio_device)
+	int count = 0;
+	
+	if (stdio_device) {
 		stdio_device->putc(c);
+		count = 1;
+	}
+	
+	return count;
 }
 
-void printb(const char c)
+int printb(const char c)
 {
 	unsigned char base = '0';
 	unsigned char uc = c;
 	unsigned char bit;
 	int i;
+	int count = 0;
 	
 	for (i=7; i>=0; i--) {
 		bit = 0x01 << i;
 		
 		if (uc & bit)
-			printc(base+1);
+			count += printc(base+1);
 		else
-			printc(base);
+			count += printc(base);
 	}
+	
+	return count;
 }
 
-void printh(const char c)
+int printh(const char c)
 {
 	unsigned char uc = c;
-	printc('0');
-	printc('x');
+	int count = 0;
+	count += printc('0');
+	count += printc('x');
 	
 	unsigned char high = (uc & 0xf0) >> 4;
 	unsigned char low = uc & 0x0f;
 	
 	if (high < 10)
-		printc(high + '0');
+		count += printc(high + '0');
 	else
-		printc(high - 10 + 'a');
+		count += printc(high - 10 + 'a');
 	
 	if (low < 10)
-		printc(low + '0');
+		count += printc(low + '0');
 	else
-		printc(low - 10 + 'a');
+		count += printc(low - 10 + 'a');
+	
+	return count;
+}
+
+int printui(unsigned int ui)
+{
+	return ui;
 }
 
 char getc()
