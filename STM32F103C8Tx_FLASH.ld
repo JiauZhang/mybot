@@ -101,9 +101,9 @@ SECTIONS
     *(.rodata*)        /* .rodata* sections (constants, strings, etc.) */
 
     . = ALIGN(4);
-    _cmd_tbl_start = .;
+    _cmd_entry_start = .;
     KEEP(*(SORT(.fibot_cmd_tbl*)));
-    _cmd_tbl_end   = .;
+    _cmd_entry_end   = .;
 
     . = ALIGN(4);
   } >FLASH

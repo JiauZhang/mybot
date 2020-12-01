@@ -6,77 +6,77 @@
 #include <common/console.h>
 #include <common/string.h>
 
-extern unsigned int _cmd_tbl_start;
-extern unsigned int _cmd_tbl_end;
+extern unsigned int _cmd_entry_start;
+extern unsigned int _cmd_entry_end;
 
-#define get_cmd_tbl_start()                                           \
+#define get_cmd_entry_start()                                         \
     ({                                                                \
-        struct cmd_tbl *_start = (struct cmd_tbl *)&_cmd_tbl_start;   \
+        cmd_t *_start = (cmd_t *)&_cmd_entry_start;                   \
         _start;                                                       \
     })
 
-#define get_cmd_tbl_end()                                             \
+#define get_cmd_entry_end()                                           \
     ({                                                                \
-        struct cmd_tbl *_end = (struct cmd_tbl *)&_cmd_tbl_end;       \
+        cmd_t *_end = (cmd_t *)&_cmd_entry_end;                       \
         _end;                                                         \
     })
 
-#define get_cmd_tbl_next(start, end)                                  \
+#define get_cmd_entry_next(start, end)                                \
     ({                                                                \
-        struct cmd_tbl *_next = start + 1;                            \
+        cmd_t *_next = start + 1;                                     \
         if (_next > end)                                              \
             _next = end;                                              \
         _next;                                                        \
     })
 
-struct cmd_tbl *find_cmd_tbl(const char *name)
+cmd_t *find_cmd_entry(const char *name)
 {
-	struct cmd_tbl *cmd = 0;
-	struct cmd_tbl *cmd_tbl_start = get_cmd_tbl_start();
-	struct cmd_tbl *cmd_tbl_end   = get_cmd_tbl_end();
+	cmd_t *cmd = 0;
+	cmd_t *cmd_entry_start = get_cmd_entry_start();
+	cmd_t *cmd_entry_end   = get_cmd_entry_end();
 	
-	while (cmd_tbl_start != cmd_tbl_end) {
-		if (strcmp(name, cmd_tbl_start->name) == 0) {
-			cmd = cmd_tbl_start;
+	while (cmd_entry_start != cmd_entry_end) {
+		if (strcmp(name, cmd_entry_start->name) == 0) {
+			cmd = cmd_entry_start;
 			break;
 		} else {
-			cmd_tbl_start = get_cmd_tbl_next(cmd_tbl_start, cmd_tbl_end);
+			cmd_entry_start = get_cmd_entry_next(cmd_entry_start, cmd_entry_end);
 		}
 	}
 	
 	return cmd;
 }
 
-int run_cmd(struct cmd_tbl *cmd, int argc, char * const argv[])
+int run_cmd(cmd_t *cmd, int argc, char * const argv[])
 {
 	return cmd->cmd(cmd, argc, argv);
 }
 
-int do_help(struct cmd_tbl *cmd, int argc, char *const argv[])
+int do_help(cmd_t *cmd, int argc, char *const argv[])
 {
 	char *name, *help;
 	int status = 0;
-	struct cmd_tbl *cmd_tbl_start = get_cmd_tbl_start();
-	struct cmd_tbl *cmd_tbl_end   = get_cmd_tbl_end();
+	cmd_t *cmd_entry_start = get_cmd_entry_start();
+	cmd_t *cmd_entry_end   = get_cmd_entry_end();
 	
 	if (argc == 1) {
-		if (cmd_tbl_start < cmd_tbl_end) {
+		if (cmd_entry_start < cmd_entry_end) {
 			prints("FiBot shell commands:\n");
 			
 			do {
-				name = cmd_tbl_start->name;
-				help = cmd_tbl_start->help;
+				name = cmd_entry_start->name;
+				help = cmd_entry_start->help;
 				prints("%s   - %s\n", name, help);
-				cmd_tbl_start = get_cmd_tbl_next(cmd_tbl_start, cmd_tbl_end);
-			} while (cmd_tbl_start != cmd_tbl_end);
+				cmd_entry_start = get_cmd_entry_next(cmd_entry_start, cmd_entry_end);
+			} while (cmd_entry_start != cmd_entry_end);
 		} else {
 			prints("No commands availble!\n");
 		}
 	} else if (argc == 2) {
-		cmd_tbl_start = find_cmd_tbl(argv[1]);
+		cmd_entry_start = find_cmd_entry(argv[1]);
 		
-		if (cmd_tbl_start) {
-			prints("%s\n", cmd_tbl_start->usage);
+		if (cmd_entry_start) {
+			prints("%s\n", cmd_entry_start->usage);
 		} else {
 			prints("No command match \'%s\'.\n", argv[1]);
 			status = -1;
@@ -90,14 +90,14 @@ int do_help(struct cmd_tbl *cmd, int argc, char *const argv[])
 }
 FIBOT_CMD(help, do_help, "help [command]", "show command\'s help info");
 
-int do_clear(struct cmd_tbl *cmd, int argc, char *const argv[])
+int do_clear(cmd_t *cmd, int argc, char *const argv[])
 {
 	prints("\x1b[2J\x1b[H");
 	return 0;
 }
 FIBOT_CMD(clear, do_clear, "clear", "clear screen");
 
-int do_reboot(struct cmd_tbl *cmd, int argc, char *const argv[])
+int do_reboot(cmd_t *cmd, int argc, char *const argv[])
 {
 	extern void Reset_Handler(void);
 	

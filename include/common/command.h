@@ -1,21 +1,22 @@
 #ifndef __COMMAND_H__
 #define __COMMAND_H__
 
-struct cmd_tbl {
+struct cmd_entry {
 	char *name;
-	int (*cmd)(struct cmd_tbl *cmd, int argc, char *const argv[]);
+	int (*cmd)(struct cmd_entry *cmd, int argc, char *const argv[]);
 	char *usage;
 	char *help;
 };
 
 #define FIBOT_CMD(__name, __usage, __help, __cmd)                \
-    const struct cmd_tbl __fibot_cmd_##__name                    \
+    const struct cmd_entry __fibot_cmd_##__name                    \
         __attribute__((unused, section(".fibot_cmd_tbl"))) = {   \
         #__name, __usage, __help, __cmd                          \
     }
 
-int do_help();
-struct cmd_tbl *find_cmd_tbl(const char *name);
-int run_cmd(struct cmd_tbl *cmd, int argc, char * const argv[]);
+typedef struct cmd_entry cmd_t;
+
+cmd_t *find_cmd_entry(const char *name);
+int run_cmd(cmd_t *cmd, int argc, char * const argv[]);
 
 #endif

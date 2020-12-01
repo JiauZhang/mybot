@@ -9,7 +9,7 @@ extern char *argv[CMD_LINE_MAX_ARGS+1];
 void start_project(void)
 {
 	int argc;
-	struct cmd_tbl *cmd;
+	cmd_t *cmd;
 	
 	prints("\nThis is the default project!\n");
 	while (1) {
@@ -19,14 +19,14 @@ void start_project(void)
 		
 		if (argc) {
 			print_argv(argv);
-			cmd = find_cmd_tbl(argv[0]);
+			cmd = find_cmd_entry(argv[0]);
 			
 			if (cmd)
 				run_cmd(cmd, argc, argv);
 			else
 				prints("Unknown command!\n");
 		} else {
-			cmd = (struct cmd_tbl *)0;
+			cmd = (cmd_t *)0;
 		}
 	}
 }
