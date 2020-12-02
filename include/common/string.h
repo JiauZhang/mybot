@@ -3,4 +3,7 @@
 
 int strcmp(const char *cs, const char *ct);
 
+unsigned int atoui(const char *str);
+int atoi(const char *str);
+
 #endif
