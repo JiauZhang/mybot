@@ -1,5 +1,8 @@
 Make Your First Robot
 =====================
+<div align="center"> 
+<img src="./doc/media/FiBot-diagram.png" 
+</div>
 
 ### 硬件
 1. stm32f103c8t6
