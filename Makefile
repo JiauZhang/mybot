@@ -94,7 +94,7 @@ lib/libcore.a: $(lib-y)
 clean:
 	$(Q)rm -f lib/*.o lib/*.a
 	$(Q)rm -f init/*.o
-	@(Q)rm -f drivers/*.o
+	$(Q)rm -f drivers/*.o
 
 help:
 	@echo "\033[31mStep 1\033[0m: include YOUR projects' Makefile in projects.include"

@@ -1,5 +1,6 @@
 #include <devices/nrf24l01.h>
 #include <devices/spi.h>
+#include "nrf24l01_config.h"
 
 void nrf24l01_deselect_chip()
 {

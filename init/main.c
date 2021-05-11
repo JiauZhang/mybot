@@ -1,4 +1,4 @@
-#include <devices/console.h>
+#include <common/console.h>
 #include <common/project.h>
 
 int main(void)

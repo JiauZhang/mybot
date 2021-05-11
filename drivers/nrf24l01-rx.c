@@ -1,5 +1,6 @@
 #include <devices/nrf24l01.h>
-#include <devices/console.h>
+#include <common/console.h>
+#include "nrf24l01_config.h"
 
 uint8_t RC_rxData[32];
 // 接收地址RX_ADDR_P0 == RX_ADDR

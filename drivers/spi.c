@@ -1,5 +1,5 @@
 #include <devices/spi.h>
-#include <devices/console.h>
+#include <common/console.h>
 
 void spi_init(void)
 {
