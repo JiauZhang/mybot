@@ -13,6 +13,7 @@ set(BOARD bluepill)
 set(CROSS_COMPILE arm-none-eabi-)
 
 set(CMAKE_C_COMPILER ${CROSS_COMPILE}gcc)
+set(CMAKE_AR ${CROSS_COMPILE}ar)
 
 set(CMAKE_C_FLAGS "\
     -nostdlib \
@@ -21,8 +22,7 @@ set(CMAKE_C_FLAGS "\
     -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER \
 ")
 
-message(${CMAKE_C_FLAGS})
-
 include_directories(include)
 
 add_subdirectory(lib)
+add_subdirectory(drivers)
