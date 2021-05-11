@@ -15,5 +15,4 @@ Make Your First Robot
 
 ### TODO
 - [x] [TODO history](doc/TODO.md)
-- [ ] 2021-05-10: 构建工具更换为 CMake
 - [ ] add pwm device
