@@ -24,5 +24,9 @@ set(CMAKE_C_FLAGS "\
 
 include_directories(include)
 
-add_subdirectory(lib)
+# config project directory
+set(PROJECT_DIR default)
+
+# add_subdirectory(lib)
 add_subdirectory(drivers)
+add_subdirectory("projects/${PROJECT_DIR}")
