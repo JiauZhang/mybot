@@ -1,4 +1,4 @@
-obj-y += drivers/usart.o projects/default/default.o
+obj-y := projects/default/default.o
 
 default.elf: $(obj-y) lib/libcore.a
 	$(Q)$(CC) $(obj-y) -L lib -lcore $(LDFLAGS) -o $@

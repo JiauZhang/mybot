@@ -1,4 +1,2 @@
-libs := $(wildcard lib/*.c)
-libs := $(patsubst %.c,%.o,$(libs))
-
-lib-y += $(libs)
+obj-y := $(wildcard lib/*.c)
+obj-y := $(patsubst lib/%.c,%.o,$(obj-y))

@@ -1,8 +1,15 @@
+# filter out generated files
+.*
+include/config
+include/generated
+FiBot
+
+!.gitignore
+
 *.o
 *.elf
 *.bin
 *.dis
-/WiLinker*
 *.map
 *.a
 *.so

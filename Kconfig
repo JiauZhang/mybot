@@ -1,0 +1,5 @@
+mainmenu "FiBot Configuration"
+
+PROJECT ?= two-wheeled-robot
+
+source "projects/$(PROJECT)/Kconfig"

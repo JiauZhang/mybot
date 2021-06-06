@@ -1,0 +1,3 @@
+config PWM
+    bool "Select PWM driver"
+    default y

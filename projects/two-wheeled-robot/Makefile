@@ -1,5 +1,4 @@
-obj-y += drivers/usart.o drivers/pwm.o
-obj-y += projects/two-wheeled-robot/robot.o
+obj-y := projects/two-wheeled-robot/robot.o
 
 robot.elf: $(obj-y) lib/libcore.a
 	$(Q)$(CC) $(obj-y) -L lib -lcore $(LDFLAGS) -o $@

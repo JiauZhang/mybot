@@ -1,4 +1,2 @@
-objs := $(wildcard common/*.c)
-objs := $(patsubst %.c,%.o,$(objs))
-
-obj-y += $(objs)
+obj-y := $(wildcard common/*.c)
+obj-y := $(patsubst common/%.c,%.o,$(obj-y))
