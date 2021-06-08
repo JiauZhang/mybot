@@ -15,4 +15,4 @@ Make Your First Robot
 
 ### TODO
 - [x] [TODO history](doc/TODO.md)
-- [ ] add pwm device
+- [ ] add RTOS

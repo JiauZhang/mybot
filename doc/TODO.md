@@ -4,3 +4,4 @@
 - [x] 2020-09-14: add device class
 - [x] 2020-11-09: add shell interface
 - [x] 2020-11-23: add shell command interaction
+- [x] 2021/05/10~2021/06/08: add kmake build system
