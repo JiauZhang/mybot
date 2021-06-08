@@ -39,7 +39,7 @@ KBUILD_AFLAGS += -Wall -fdata-sections -ffunction-sections
 KBUILD_CFLAGS := -mcpu=$(CPU) -mthumb -c
 KBUILD_CFLAGS += -Wall -fdata-sections -ffunction-sections
 KBUILD_CFLAGS += -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER
-KBUILD_CFLAGS += -Iinclude
+KBUILD_CFLAGS += -Iinclude -Ikernel/include
 
 LDSCRIPT = STM32F103C8Tx_FLASH.ld
 LIBS = -lc -lm -lnosys 
@@ -56,12 +56,13 @@ include $(srctree)/kmake/Kmake.cfg
 _all: help
 
 core-y := init/ common/ projects/$(PROJECT)/ drivers/
+core-y += kernel/
 libs-y := lib/
 
 # head-y core-y drivers-y libs-y
 include $(srctree)/kmake/Kmake.build
 
-FiBot: $(build-objs)
+FiBot: $(build-objs) FORCE
 	@echo "  CC      $@"
 	$(Q)$(CC) $(build-objs) $(KBUILD_LDFLAGS) -o $@
 
