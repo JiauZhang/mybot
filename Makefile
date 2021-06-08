@@ -46,21 +46,24 @@ LIBS = -lc -lm -lnosys
 LIBDIR =
 KBUILD_LDFLAGS := -mcpu=$(CPU) -mthumb -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,--gc-sections
 
+PROJECT ?= two-wheeled-robot
+export PROJECT
+
+include projects/Makefile
+
 include $(srctree)/kmake/Kmake.cfg
 
 _all: help
 
-core-y := init/ common/
+core-y := init/ common/ projects/$(PROJECT)/ drivers/
 libs-y := lib/
 
 # head-y core-y drivers-y libs-y
 include $(srctree)/kmake/Kmake.build
 
-PROJECT := two-wheeled-robot
-
 FiBot: $(build-objs)
 	@echo "  CC      $@"
-	$(Q)$(CC) $(build-objs) -L $(KBUILD_LDFLAGS) -o $@
+	$(Q)$(CC) $(build-objs) $(KBUILD_LDFLAGS) -o $@
 
 rm-files += include/config include/generated \
 	.config .config.old kmake-example

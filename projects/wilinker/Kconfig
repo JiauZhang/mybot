@@ -1,0 +1,3 @@
+config NRF24L01
+    bool "Select NRF24L01 driver"
+    default y
