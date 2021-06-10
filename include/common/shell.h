@@ -6,10 +6,10 @@
 
 #define KEY_ENTER       0x0d
 
-void show_prompt();
+extern void show_prompt(void);
 
-int read_line();
-int parse_line(char *cmdline, char *argv[]);
-void print_argv(char *argv[]);
+extern int read_line(void);
+extern int parse_line(char *cmdline, char *argv[]);
+extern void print_argv(char *argv[]);
 
 #endif

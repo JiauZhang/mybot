@@ -63,8 +63,9 @@ libs-y := lib/
 include $(srctree)/kmake/Kmake.build
 
 FiBot: $(build-objs) FORCE
+	$(info $(build-objs))
 	@echo "  CC      $@"
-	$(Q)$(CC) $(build-objs) $(KBUILD_LDFLAGS) -o $@
+	$(Q)$(CC) -o $@ $(KBUILD_LDFLAGS) -Wl,--start-group $(build-objs) -Wl,--end-group
 
 rm-files += include/config include/generated \
 	.config .config.old kmake-example
