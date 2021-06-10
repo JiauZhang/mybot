@@ -75,7 +75,7 @@
                                                                 /* Assembly-optimized function(s).                      */
                                                                 /* Enable/disable assembly-optimized memory ...         */
                                                                 /* ... function(s). [see Note #1]                       */
-#define  LIB_MEM_CFG_OPTIMIZE_ASM_EN    DEF_DISABLED
+#define  LIB_MEM_CFG_OPTIMIZE_ASM_EN    DEF_ENABLED
 
 
 /*

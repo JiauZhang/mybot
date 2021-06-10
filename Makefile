@@ -46,7 +46,7 @@ LIBS = -lc -lm -lnosys
 LIBDIR =
 KBUILD_LDFLAGS := -mcpu=$(CPU) -mthumb -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,--gc-sections
 
-PROJECT ?= two-wheeled-robot
+PROJECT ?= default
 export PROJECT
 
 include projects/Makefile
@@ -56,7 +56,7 @@ include $(srctree)/kmake/Kmake.cfg
 _all: help
 
 core-y := init/ common/ projects/$(PROJECT)/ drivers/
-# core-y += kernel/
+core-y += kernel/
 libs-y := lib/
 
 # head-y core-y drivers-y libs-y

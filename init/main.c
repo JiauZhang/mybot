@@ -4,13 +4,11 @@
 
 int main(void)
 {
-	// OS_ERR   err;
+	OS_ERR err;
 
 	stdio_init();
-
+	OSInit(&err);
 	start_project();
-
-	// OSInit(&err);
 	
 	return 0;
 }
