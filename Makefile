@@ -56,7 +56,7 @@ include $(srctree)/kmake/Kmake.cfg
 _all: help
 
 core-y := init/ common/ projects/$(PROJECT)/ drivers/
-core-y += kernel/
+# core-y += kernel/
 libs-y := lib/
 
 # head-y core-y drivers-y libs-y
@@ -65,7 +65,7 @@ include $(srctree)/kmake/Kmake.build
 FiBot: $(build-objs) FORCE
 	$(info $(build-objs))
 	@echo "  CC      $@"
-	$(Q)$(CC) -o $@ $(KBUILD_LDFLAGS) -Wl,--start-group $(build-objs) -Wl,--end-group
+	$(Q)$(CC) -o $@ $(KBUILD_LDFLAGS) -Wl,--whole-archive $(build-objs) -Wl,--no-whole-archive
 
 rm-files += include/config include/generated \
 	.config .config.old kmake-example
