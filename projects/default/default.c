@@ -6,12 +6,17 @@
 extern char cmd_line[CMD_LINE_SIZE];
 extern char *argv[CMD_LINE_MAX_ARGS+1];
 
+extern void start_tasks();
+
 void start_project(void)
 {
 	int argc;
 	cmd_t *cmd;
 	
 	prints("\nThis is the default project!\n");
+	prints("exec start_tasks()\n");
+	start_tasks();
+	prints("exit start_tasks()\n");
 	while (1) {
 		show_prompt();
 		read_line();

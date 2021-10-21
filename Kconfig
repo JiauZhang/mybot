@@ -1,3 +1,4 @@
 mainmenu "FiBot Configuration"
 
 source "projects/$(PROJECT)/Kconfig"
+source "yard/Kconfig"

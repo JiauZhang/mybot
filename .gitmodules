@@ -1,3 +1,6 @@
 [submodule "kmake"]
 	path = kmake
-	url = https://github.com/jiauzhang/kmake
+	url = https://github.com/JiauZhang/kmake
+[submodule "yard"]
+	path = yard
+	url = https://github.com/JiauZhang/yard
