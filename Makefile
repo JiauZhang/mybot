@@ -38,8 +38,11 @@ KBUILD_AFLAGS += -Wall -fdata-sections -ffunction-sections
 
 KBUILD_CFLAGS := -mcpu=$(CPU) -mthumb -c
 KBUILD_CFLAGS += -Wall -fdata-sections -ffunction-sections
-KBUILD_CFLAGS += -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER
-KBUILD_CFLAGS += -Iinclude -Iucos_kernel/include -Iyard
+KBUILD_CFLAGS += -DSTM32F103xB -DUSE_HAL_DRIVER
+KBUILD_CFLAGS += -Iinclude -Iyard/include -I/yard/drivers/hwcrypto
+KBUILD_CFLAGS += -Ilib/HAL_Drivers -Ilib/STM32F1xx_HAL/config
+KBUILD_CFLAGS += -Ilib/STM32F1xx_HAL/STM32F1xx_HAL_Driver/Inc -Ilib/STM32F1xx_HAL/STM32F1xx_HAL_Driver/CMSIS/Include
+KBUILD_CFLAGS += -Ilib/STM32F1xx_HAL/CMSIS/Device/ST/STM32F1xx/Include
 
 LDSCRIPT = STM32F103C8Tx_FLASH.ld
 LIBS = -lc -lm -lnosys 
@@ -55,14 +58,14 @@ include $(srctree)/kmake/Kmake.cfg
 
 _all: help
 
-core-y := init/ common/ projects/$(PROJECT)/ drivers/
-core-y += yard/
+# core-y := init/ common/ projects/$(PROJECT)/ drivers/
+# core-y += yard/
 libs-y := lib/
 
 # head-y core-y drivers-y libs-y
 include $(srctree)/kmake/Kmake.build
 
-FiBot: $(build-objs) FORCE
+FiBot: $(build-objs)
 	$(info $(build-objs))
 	@echo "  CC      $@"
 	$(Q)$(CC) -o $@ $(KBUILD_LDFLAGS) -Wl,--whole-archive $(build-objs) -Wl,--no-whole-archive
