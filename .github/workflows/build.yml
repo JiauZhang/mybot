@@ -38,5 +38,7 @@ jobs:
         if: ${{ success() }}
         shell: bash
         run: |
+          git submodule init
+          git submodule update
           cp yard/arch/arm/configs/blue_pill_defconfig yard/.config
           scons -C yard -j4 --external=..
