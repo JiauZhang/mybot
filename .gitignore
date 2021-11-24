@@ -5,6 +5,7 @@ include/generated
 FiBot
 
 !.gitignore
+!.github
 
 *.o
 *.elf

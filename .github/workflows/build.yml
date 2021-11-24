@@ -1,0 +1,42 @@
+name: build
+
+on:
+  push:
+    paths-ignore:
+      - '**/README.md'
+      - '**/.gitignore'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@master
+        with:
+          python-version: 3.8
+
+      - name: Install Tools
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get -qq install gcc-multilib libsdl-dev libncurses5-dev scons
+          sudo python -m pip install --upgrade pip -qq
+          pip install requests -qq
+
+      - name: Install Arm ToolChains
+        shell: bash
+        run: |
+          wget -q https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
+          sudo tar xjf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2 -C /opt
+          /opt/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-gcc --version
+          echo "PATH=$(echo /opt/gcc-arm-none-eabi-10-2020-q4-major/bin/:$PATH)" >> $GITHUB_ENV
+
+      - name: Build Source Code
+        if: ${{ success() }}
+        shell: bash
+        run: |
+          cp yard/arch/arm/configs/blue_pill_defconfig yard/.config
+          scons -C yard -j4 --external=..
