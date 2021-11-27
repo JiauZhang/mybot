@@ -1,3 +1,3 @@
 from scripts.kconfig import Kconfig
 
-print('call external script')
+Kconfig('KCONFIG_SELECT', 'projects/default/main.c')
