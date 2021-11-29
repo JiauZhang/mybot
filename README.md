@@ -1,4 +1,4 @@
-Make Your First Robot
+Make Your Bot
 =====================
 <div align="center"> 
 <img src="https://github.com/JiauZhang/FiBot/blob/master/doc/media/FiBot-diagram.png">
